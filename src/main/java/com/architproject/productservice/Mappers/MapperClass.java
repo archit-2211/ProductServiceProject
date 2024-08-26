@@ -6,10 +6,14 @@ import com.architproject.productservice.DTOs.FakeStoreServiceResponseDTO;
 import com.architproject.productservice.DTOs.ProductDetailsRequestDTO;
 import com.architproject.productservice.Models.Category;
 import com.architproject.productservice.Models.Product;
+import com.architproject.productservice.Services.ProductService;
 import org.springframework.stereotype.Component;
+
+import java.util.Date;
 
 @Component
 public class MapperClass {
+
 
     public ControllerResponseDTO productToDto(Product product) {
 
@@ -47,6 +51,21 @@ public class MapperClass {
 
         return requestDTO;
 
+    }
+
+    public Product detailDtoToProduct(ProductDetailsRequestDTO responseDTO) {
+        Product product = new Product();
+        Date currDate = new Date() ;
+        product.setCreatedAt( currDate );
+        product.setDescription(responseDTO.getDescription());
+        product.setPrice(Double.parseDouble(responseDTO.getPrice()));
+        product.setName(responseDTO.getName());
+        Category category = new Category();
+        category.setName(responseDTO.getCategory());
+        category.setCreatedAt( currDate );
+        product.setCategory(category);
+
+        return product;
     }
 
 

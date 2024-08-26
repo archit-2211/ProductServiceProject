@@ -3,9 +3,11 @@ package com.architproject.productservice.Services;
 import com.architproject.productservice.DTOs.FakeStoreServiceRequestDTO;
 import com.architproject.productservice.DTOs.FakeStoreServiceResponseDTO;
 import com.architproject.productservice.DTOs.ProductDetailsRequestDTO;
+import com.architproject.productservice.Exception.CreationUnsuccessfulException;
 import com.architproject.productservice.Exception.ProductNotFoundException;
 import com.architproject.productservice.Models.Product;
 import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.datasource.init.CannotReadScriptException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
@@ -15,7 +17,7 @@ import com.architproject.productservice.Mappers.MapperClass;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
+@Service("fakeStoreServiceObj")
 public class FakeStoreService implements ProductService{
 
     private final WebClient webClient;
@@ -60,14 +62,14 @@ public class FakeStoreService implements ProductService{
     }
 
     @Override
-    public Product addProduct(ProductDetailsRequestDTO dto) {
+    public Product addProduct(ProductDetailsRequestDTO dto) throws CreationUnsuccessfulException {
         FakeStoreServiceRequestDTO request = mapperClass.inputToRequestDTO(dto) ;
 
         Flux<FakeStoreServiceResponseDTO> response = webClient.post().uri("https://fakestoreapi.com/products").bodyValue(request).retrieve().bodyToFlux(FakeStoreServiceResponseDTO.class);
         FakeStoreServiceResponseDTO fakeStoreServiceResponseDTO = response.blockFirst();
 
         if (fakeStoreServiceResponseDTO == null) {
-            throw new RuntimeException("Something Went Wrong");
+            throw new CreationUnsuccessfulException("Something Went Wrong");
         }
         return mapperClass.dtoToProduct(fakeStoreServiceResponseDTO);
 

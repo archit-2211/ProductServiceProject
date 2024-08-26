@@ -2,7 +2,9 @@ package com.architproject.productservice.ControllerAdvice;
 
 
 import com.architproject.productservice.DTOs.ErrorDTO;
+import com.architproject.productservice.Exception.CreationUnsuccessfulException;
 import com.architproject.productservice.Exception.ProductNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -22,12 +24,12 @@ public class ProductControllerAdvice {
 
     }
 
-//    @ExceptionHandler(RuntimeException.class)
-//    public ResponseEntity<ErrorDTO> runtimeException(RuntimeException e) {
-//        ErrorDTO errorDTO = new ErrorDTO();
-//        errorDTO.setError("Something Went Wrong Unexpected Error");
-//        ResponseEntity<ErrorDTO> entity = new ResponseEntity<>(errorDTO, HttpStatus.INTERNAL_SERVER_ERROR) ;
-//
-//        return entity;
-//    }
+    @ExceptionHandler(CreationUnsuccessfulException.class)
+    public ResponseEntity<ErrorDTO> creationUnsuccessfulException(CreationUnsuccessfulException e) {
+        ErrorDTO errorDTO = new ErrorDTO();
+        errorDTO.setError(e.getMessage());
+        ResponseEntity<ErrorDTO> entity = new ResponseEntity<>(errorDTO, HttpStatus.BAD_GATEWAY) ;
+
+        return entity;
+    }
 }

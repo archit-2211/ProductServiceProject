@@ -8,7 +8,6 @@ import com.architproject.productservice.Exception.ProductNotFoundException;
 import com.architproject.productservice.Mappers.MapperClass;
 import com.architproject.productservice.Models.Product;
 import com.architproject.productservice.Services.ProductService;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,20 +16,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/products")
-public class ProductController {
+
+@RequestMapping("/db/products")
+public class ProductControllerforDB{
+
     ProductService productService;
     MapperClass mapper;
 
     //Constructor //
-    public ProductController(@Qualifier("fakeStoreServiceObj") ProductService productService, MapperClass mapper) {
+    public ProductControllerforDB(ProductService productService, MapperClass mapper) {
         this.productService = productService;
         this.mapper = mapper;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ControllerResponseDTO> getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
-        
+
         Product product = productService.getProductById(id);
         ControllerResponseDTO responseDTO = mapper.productToDto(product);
 
@@ -38,12 +39,11 @@ public class ProductController {
 
     }
 
-    @GetMapping
+    @GetMapping("/this")
     public ResponseEntity<List<ControllerResponseDTO>> getAllProducts() throws ProductNotFoundException {
-        List<Product> products = productService.getAllProducts();
         List<ControllerResponseDTO> responseDTO = new ArrayList<>();
 
-        for (Product product : products) {
+        for (Product product : productService.getAllProducts()) {
             responseDTO.add(mapper.productToDto(product));
         }
 
