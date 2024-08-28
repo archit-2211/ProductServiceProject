@@ -75,17 +75,6 @@ public class FakeStoreService implements ProductService{
 
     }
 
-    @Override
-    public Product updateProduct(Long id, ProductDetailsRequestDTO dto) {
-        FakeStoreServiceRequestDTO request = mapperClass.inputToRequestDTO(dto);
-        Flux<FakeStoreServiceResponseDTO> response = webClient.patch().uri("https://fakestoreapi.com/products/"+id).bodyValue(request).retrieve().bodyToFlux(FakeStoreServiceResponseDTO.class);
-        FakeStoreServiceResponseDTO fakeStoreServiceResponseDTO = response.blockFirst();
-
-        if (fakeStoreServiceResponseDTO == null) {
-            throw new RuntimeException("Something Went Wrong");
-        }
-        return mapperClass.dtoToProduct(fakeStoreServiceResponseDTO);
-    }
 
     @Override
     public Product replaceProduct(Long id, ProductDetailsRequestDTO dto) {

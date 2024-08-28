@@ -5,7 +5,6 @@ import com.architproject.productservice.Exception.CreationUnsuccessfulException;
 import com.architproject.productservice.Exception.ProductNotFoundException;
 import com.architproject.productservice.Mappers.MapperClass;
 import com.architproject.productservice.Models.Product;
-import com.architproject.productservice.Repositories.CategoryRepository;
 import com.architproject.productservice.Repositories.ProductRespository;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
@@ -17,15 +16,12 @@ import java.util.Optional;
 @Service
 @Primary
 public class RealProductService implements ProductService {
-    private ProductRespository productRespository;
-    private CategoryRepository CategoryRepository;
-    private MapperClass mapperClass;
+    private final ProductRespository productRespository;
+    private final MapperClass mapperClass;
 
     public RealProductService(ProductRespository productRespository,
-                              CategoryRepository CategoryRepository,
                               MapperClass mapperClass) {
         this.productRespository = productRespository;
-        this.CategoryRepository = CategoryRepository;
         this.mapperClass = mapperClass;
     }
 
@@ -57,23 +53,27 @@ public class RealProductService implements ProductService {
         return optionalProduct;
     }
 
-    @Override
-    public Product updateProduct(Long id, ProductDetailsRequestDTO dto) {
-        return null;
-    }
 
-
-    /*
-    Have to implement the below Functionality
-     */
     @Override
     public Product replaceProduct(Long id, ProductDetailsRequestDTO dto)  {
-        Product optionalProduct = productRespository.save(mapperClass.detailDtoToProduct(dto));
-        return optionalProduct;
+        Product product = mapperClass.detailDtoToProduct(dto);
+        product.setId(id);
+        product = productRespository.save(product);
+        if (product ==  null) {
+            throw new RuntimeException("Replacing Product Unsuccessful");
+        }
+        return product;
     }
 
     @Override
     public HttpStatus deleteProductById(Long id) {
-        return null;
+        productRespository.deleteById(id);
+
+        return HttpStatus.OK;
     }
+
+
+
+
+
 }

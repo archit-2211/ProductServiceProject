@@ -17,7 +17,7 @@ public interface ProductService {
     public List<Product> getAllProducts() throws ProductNotFoundException;
 
     public Product addProduct(ProductDetailsRequestDTO dto) throws CreationUnsuccessfulException;
-    public Product updateProduct(Long id, ProductDetailsRequestDTO dto);
+
     public Product replaceProduct(Long id, ProductDetailsRequestDTO dto);
 
     public HttpStatus deleteProductById(Long id);

@@ -60,14 +60,6 @@ public class ProductController {
     }
 
 
-    @PatchMapping("/{id}")
-    public ControllerResponseDTO updateProductById(@PathVariable("id") Long id,@RequestBody ProductDetailsRequestDTO request) {
-
-
-        Product product = productService.updateProduct(id,request);
-        return mapper.productToDto(product);
-    }
-
     @PutMapping("/{id}")
     public ControllerResponseDTO replaceProductById(@PathVariable("id") Long id, @RequestBody ProductDetailsRequestDTO request) {
 
