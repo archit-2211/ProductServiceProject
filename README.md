@@ -1,15 +1,14 @@
-****ProductService Microservice****
+****ProductService Microservice**** 
 
-
-**Overview **
 ProductService is a microservice built using Java and Spring Boot. This project is designed to demonstrate how to create a microservice using Spring Boot with an emphasis on understanding the Model-View-Controller (MVC) architecture. It uses various frameworks and tools including Spring Boot Dev Tools, Lombok, Spring Configuration Processor, REST APIs, RestTemplate, WebClient, JPA-Hibernate, and MySQL.
 
 **Purpose**
 The primary goal of this project is to:
-
 Learn how to build a microservice using Spring Boot.
 Understand and implement the MVC architecture in a microservice context.
 Gain practical experience with Spring Boot's features and integrations.
+
+
 **Technologies Used**
 Java: Programming language.
 Spring Boot: Framework for building microservices.
