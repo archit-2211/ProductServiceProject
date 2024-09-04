@@ -18,6 +18,7 @@ public class Product extends BaseModelClass {
     private Double price;
     private String description;
     private Integer quantity;
+
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST,CascadeType.DETACH})
     private Category category;
 

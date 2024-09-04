@@ -8,6 +8,7 @@ import com.architproject.productservice.Exception.ProductNotFoundException;
 import com.architproject.productservice.Mappers.MapperClass;
 import com.architproject.productservice.Models.Product;
 import com.architproject.productservice.Services.ProductService;
+import jakarta.annotation.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +41,14 @@ public class ProductControllerforDB{
     }
 
     @GetMapping("/this")
-    public ResponseEntity<List<ControllerResponseDTO>> getAllProducts() throws ProductNotFoundException {
+    public ResponseEntity<List<ControllerResponseDTO>> getAllProducts(@Nullable @RequestHeader("authToken") String token) throws ProductNotFoundException {
+        if (token == null || token.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+
+
+
         List<ControllerResponseDTO> responseDTO = new ArrayList<>();
 
         for (Product product : productService.getAllProducts()) {
